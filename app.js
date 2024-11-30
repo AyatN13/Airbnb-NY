@@ -3,15 +3,17 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const recipeRoutes = require('./routes/recipes'); // Import routes
+const path = require('path');
+const recipeRoutes = require('./routes/recipes');
 
-dotenv.config(); // Load .env variables
+dotenv.config(); 
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from "public"
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -19,11 +21,11 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
-app.use('/recipes', recipeRoutes); // Use the recipes routes
+app.use('/recipes', recipeRoutes);
 
 // Default Route
 app.get('/', (req, res) => {
-  res.send('Welcome to Recipe Finder API');
+  res.sendFile(path.join(__dirname, 'public/index.html')); // Serve the frontend HTML file
 });
 
 // Start the Server
