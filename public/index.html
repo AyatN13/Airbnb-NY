@@ -3,15 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipe Finder</title>
-  <script src="js/app.js" defer></script>
+  <title>StayScout NY</title>
+  <script defer src="app.js"></script>
 </head>
 <body>
-  <h1>Recipe Finder</h1>
+  <h1>StayScout NY</h1>
   <form id="search-form">
-    <input type="text" name="ingredients" placeholder="Enter ingredients (comma-separated)" required>
+    <label for="neighborhood">Neighborhood:</label>
+    <input type="text" name="neighborhood" placeholder="e.g., Manhattan">
+    <label for="price">Budget:</label>
+    <input type="number" name="minPrice" placeholder="Min Price">
+    <input type="number" name="maxPrice" placeholder="Max Price">
+
+    <label for="checkin">Check-in:</label>
+    <input type="date" name="checkin" required>
+
+    <label for="checkout">Check-out:</label>
+    <input type="date" name="checkout" required>
+
+    <label for="adults">Guests:</label>
+    <input type="number" name="adults" required>
+
     <button type="submit">Search</button>
   </form>
-  <div id="recipe-results"></div>
+  <div id="results"></div>
 </body>
 </html>

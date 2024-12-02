@@ -1,33 +1,34 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const recipeRoutes = require('./routes/recipes');
+document.getElementById('search-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const form = event.target;
 
-dotenv.config(); 
+  const neighborhood = form.neighborhood.value;
+  const minPrice = form.minPrice.value;
+  const maxPrice = form.maxPrice.value;
+  const checkin = form.checkin.value;
+  const checkout = form.checkout.value;
+  const adults = form.adults.value;
 
-const app = express();
+  const response = await fetch(
+    `/api/search?neighborhood=${neighborhood}&minPrice=${minPrice}&maxPrice=${maxPrice}&checkin=${checkin}&checkout=${checkout}&adults=${adults}`
+  );
+  const data = await response.json();
 
-// Middleware
-app.use(bodyParser.json());
-app.use(cors());
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from "public"
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = '';
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-// Routes
-app.use('/recipes', recipeRoutes);
-
-// Default Route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html')); // Serve the frontend HTML file
+  if (data.length === 0) {
+    resultsDiv.innerHTML = '<p>No properties found.</p>';
+  } else {
+    data.forEach((property) => {
+      const propertyDiv = document.createElement('div');
+      propertyDiv.innerHTML = `
+        <h3>${property.name}</h3>
+        <p>${property.address}</p>
+        <p>Price: ${property.price.amount} ${property.price.currency}</p>
+        <a href="${property.url}" target="_blank">View Details</a>
+      `;
+      resultsDiv.appendChild(propertyDiv);
+    });
+  }
 });
-
-// Start the Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

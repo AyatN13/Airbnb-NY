@@ -1,10 +1,7 @@
-#Recipe Finder
+# airbnb-ny
 
-Description: A web app where users can search for recipes based on ingredients they have at home.
+## Description
+A web application to search for Airbnb properties in New York City. Users can filter properties by neighborhood, budget, and travel dates.
 
-    •    Form: A search form where users input ingredients (e.g., "chicken, garlic, onion").
-    •    API: Use the Spoonacular API to fetch recipes.
-    •    MongoDB: Store user-favorite recipes or search history.
-    •    Bonus: Add a feature to save recipes with user accounts.
-
-
+## Features
+- NYC-specific Airbnb property search.
